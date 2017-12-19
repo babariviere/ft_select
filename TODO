@@ -1,0 +1,1 @@
+- [ ] initialize all static variables to avoid using termbuf

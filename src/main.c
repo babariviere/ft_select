@@ -6,7 +6,7 @@
 /*   By: briviere <briviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/18 13:08:49 by briviere          #+#    #+#             */
-/*   Updated: 2017/12/19 14:21:20 by briviere         ###   ########.fr       */
+/*   Updated: 2017/12/19 16:56:20 by briviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ void	print_choices(char **choices, int len, char **termbuf)
 	col = ft_term_col();
 	row = ft_term_row();
 	max_col = eval_needed_col(choices, col, row);
-	curr_zone = (t_rect){0, 0, ((col + 1) / max_col), ((row + 1) / (len + max_col))};
+	curr_zone = (t_rect){0, 0, ft_ceil((float)col / (float)max_col), ft_ceil((float)row / (float)(len + max_col))};
 	idx = 0;
+	ft_term_mr(termbuf);
+	//ft_term_us(termbuf);
 	while (choices[idx])
 	{
 		print_choice(choices[idx], curr_zone, termbuf);
@@ -50,6 +52,8 @@ void	print_choices(char **choices, int len, char **termbuf)
 		}
 		idx++;
 	}
+	//ft_term_ue(termbuf);
+	ft_term_me(termbuf);
 }
 
 int		main(int ac, char **av)
@@ -63,9 +67,11 @@ int		main(int ac, char **av)
 		return (0);
 	if ((termbuf = ft_term_init(termtype)) == 0)
 		return (0);
+	ft_term_ti(&termbuf);
 	ft_term_hidein();
 	ft_term_clr(&termbuf);
 	print_choices(av + 1, ac - 1, &termbuf);
 	while (1);
+	ft_term_te(&termbuf);
 	return (0);
 }
