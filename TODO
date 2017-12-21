@@ -1,1 +1,3 @@
-- [ ] initialize all static variables to avoid using termbuf
+- [x] initialize all static variables to avoid using termbuf
+- [ ] write proper code
+- [ ] handle when it's output is piped
