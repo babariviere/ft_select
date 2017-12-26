@@ -1,7 +1,7 @@
 NAME=ft_select
 NAME_DBG=ft_selectdbg
 NAME_SAN=ft_selectsan
-SRC_NAME=main.c eval.c signal.c
+SRC_NAME=main.c eval.c signal.c choice.c
 SRC=$(addprefix src/, $(SRC_NAME))
 OBJ=$(patsubst src/%.c, obj/%.o, $(SRC))
 OBJ_DBG=$(patsubst src/%.c, obj_dbg/%.o, $(SRC))

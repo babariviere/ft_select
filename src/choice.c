@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   select.h                                           :+:      :+:    :+:   */
+/*   choice.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: briviere <briviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/18 13:09:11 by briviere          #+#    #+#             */
-/*   Updated: 2017/12/26 14:47:07 by briviere         ###   ########.fr       */
+/*   Created: 2017/12/26 14:11:43 by briviere          #+#    #+#             */
+/*   Updated: 2017/12/26 14:47:02 by briviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SELECT_H
-# define SELECT_H
+#include "select.h"
 
-# include "libft.h"
-# include <signal.h>
-# include <stdio.h>
-# include <sys/ioctl.h>
+void	build_choices(t_choice *choices, char **select)
+{
+	size_t		idx;
 
-typedef struct	s_choice {
-	char			*choice;
-	int				selected;
-}				t_choice;
-
-void			build_choices(t_choice *choices, char **select);
-
-int				eval_needed_col(t_choice *choices, size_t len,
-		int col, int row);
-void			signal_handler(int sig);
-
-#endif
+	if (select == 0 || *select == 0)
+		return ;
+	idx = 0;
+	while (select[idx])
+	{
+		choices[idx].choice = select[idx];
+		choices[idx].selected = 0;
+		idx++;
+	}
+	choices[idx].choice = 0;
+}

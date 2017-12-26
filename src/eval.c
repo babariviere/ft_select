@@ -6,22 +6,42 @@
 /*   By: briviere <briviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 12:51:02 by briviere          #+#    #+#             */
-/*   Updated: 2017/12/19 13:08:19 by briviere         ###   ########.fr       */
+/*   Updated: 2017/12/26 14:46:40 by briviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "select.h"
 
-int		eval_needed_col(char **choices, int col, int row)
+static size_t	ft_strmax_choices(t_choice *choices, size_t len)
+{
+	size_t	idx;
+	size_t	longest;
+	size_t	res;
+
+	idx = 0;
+	longest = 0;
+	while (idx < len)
+	{
+		if (choices[idx].choice)
+			res = ft_strlen(choices[idx].choice);
+		else
+			break ;
+		if (res > longest)
+			longest = res;
+		idx++;
+	}
+	return (longest);
+}
+
+int				eval_needed_col(t_choice *choices, size_t len,
+		int col, int row)
 {
 	int		max;
-	int		num;
 	int		res;
 
-	num = ft_tablen(choices, sizeof(char *));
-	max = ft_strmax(choices);
+	max = ft_strmax_choices(choices, len);
 	res = 1;
-	while ((num / res) > row || (max / res) > col)
+	while (((int)len / res) > row || (max / res) > col)
 		res++;
 	return (res);
 }
