@@ -27,7 +27,7 @@ void	signal_handler(int sig)
 		ft_term_hidein();
 		ft_term_clr();
 		ft_term_set_cur_vis(0);
-		tputs("\x10", 1, ft_fputchar);
+		tputs("\x10", 1, ft_puttty);
 		signal(SIGTSTP, signal_handler);
 	}
 	if (sig == SIGINT)
