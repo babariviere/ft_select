@@ -6,33 +6,11 @@
 /*   By: briviere <briviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 12:51:02 by briviere          #+#    #+#             */
-/*   Updated: 2018/01/08 16:45:14 by briviere         ###   ########.fr       */
+/*   Updated: 2018/01/09 10:07:02 by briviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "select.h"
-
-static size_t	ft_strmax_choices(t_choice *choices, size_t len)
-{
-	size_t	idx;
-	size_t	longest;
-	size_t	res;
-
-	idx = 0;
-	longest = 0;
-	while (idx < len)
-	{
-		if (choices[idx].choice)
-			res = ft_strlen(choices[idx].choice);
-		else
-			break ;
-		if (res > longest)
-			longest = res;
-		idx++;
-	}
-	return (longest);
-}
-
 
 static int	check_fit(t_rect parent, t_rect child, size_t count)
 {
@@ -59,18 +37,26 @@ static int	check_fit(t_rect parent, t_rect child, size_t count)
 	return (1);
 }
 
-t_rect		eval_needed_zone(t_choice *choices, size_t len,
-		int col, int row)
+static void	eval_needed_zone_sub(t_rect parent, t_rect *child, size_t len)
 {
-	int		max;
+
+	while (check_fit(parent, *child, len))
+		child->height++;
+	child->height--;
+	while (check_fit(parent, *child, len))
+		child->width++;
+	child->width--;
+}
+
+t_rect		eval_needed_zone(size_t len)
+{
 	t_rect	parent;
 	t_rect	child;
 	float	prop;
 
-	max = ft_strmax_choices(choices, len);
-	parent = (t_rect){0, 0, col, row};
-	child = (t_rect){0, 0, col, row};
-	prop = col / row;
+	parent = (t_rect){0, 0, ft_term_col(), ft_term_row()};
+	prop = parent.width / parent.height;
+	child = (t_rect){0, 0, parent.width, parent.height};
 	while (!check_fit(parent, child, len))
 	{
 		if (ft_ceil((float)child.width / prop) >= (int)child.height)
@@ -82,20 +68,7 @@ t_rect		eval_needed_zone(t_choice *choices, size_t len,
 			child.height /= 2;
 			child.width /= 2;
 		}
-//		ft_term_clr();
 	}
-	while (check_fit(parent, child, len))
-	{
-		child.height++;
-//		ft_term_clr();
-	}
-	child.height--;
-	while (check_fit(parent, child, len))
-	{
-		child.width++;
-//		ft_term_clr();
-	}
-	child.width--;
-//	ft_term_clr();
+	eval_needed_zone_sub(parent, &child, len);
 	return (child);
 }
